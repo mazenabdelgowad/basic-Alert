@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="index.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <title>Timer</title>
+  </head>
+  <body>
+    <main>
+      <div class="container">
+        <form class="form">
+          <input
+            type="number"
+            id="time"
+            name="time"
+            placeholder="Time in minutes"
+            required
+            max="60"
+            min="1"
+          />
+          <button type="button" class="btn btn-dark add-time">Add Time</button>
+        </form>
+
+        <div
+          class="timer__wrapper d-flex justify-content-center align-items-center mt-5 fs-1"
+        >
+          <div class="minutes me-2">00</div>
+          :
+          <div class="seconds ms-2">00</div>
+        </div>
+
+        <div
+          class="buttons d-flex justify-content-center align-items-center mt-5 gap-3"
+        >
+          <button class="start btn btn-dark">Start</button>
+          <button class="reset btn btn-dark">Reset</button>
+        </div>
+      </div>
+    </main>
+    <audio
+      class="finshTimeAudio"
+      src="short-success-sound-glockenspiel-treasure-video-game-6346.mp3"
+    ></audio>
+    <script src="main.js"></script>
+  </body>
+</html>
