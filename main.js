@@ -34,6 +34,7 @@ startButton.addEventListener("click", () => {
       secondsContainer.textContent = 3;
     }
 
+    // bunch of errors here...
     startTimer = setInterval(() => {
       secondsContainer.textContent--;
       if (
