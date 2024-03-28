@@ -4,66 +4,60 @@ const timeInput = document.querySelector("input[type='number']");
 const addTimeButton = document.querySelector(".add-time");
 const minutesContainer = document.querySelector(".minutes");
 const secondsContainer = document.querySelector(".seconds");
-const finshTimeAudio = document.querySelector(".finshTimeAudio");
+const finishTimeAudio = document.querySelector(".finishTimeAudio");
+
+const padWithZero = (num) => {
+  return num < 10 ? `0${num}` : num;
+};
+
+const updateTimerDisplay = (minutes, seconds) => {
+  minutesContainer.textContent = padWithZero(minutes);
+  secondsContainer.textContent = padWithZero(seconds);
+};
+
+const startTimer = () => {
+  let minutes = parseInt(minutesContainer.textContent);
+  let seconds = parseInt(secondsContainer.textContent);
+
+  let timer = setInterval(() => {
+    if (minutes === 0 && seconds === 0) {
+      clearInterval(timer);
+      finishTimeAudio.play();
+      return;
+    }
+
+    if (seconds === 0) {
+      minutes--;
+      seconds = 59;
+    } else {
+      seconds--;
+    }
+
+    updateTimerDisplay(minutes, seconds);
+  }, 1000);
+
+  return timer;
+};
 
 addTimeButton.addEventListener("click", () => {
   if (timeInput.value) {
-    if (
-      minutesContainer.textContent !== "00" ||
-      secondsContainer.textContent !== "00"
-    ) {
-      minutesContainer.textContent = "00";
-      secondsContainer.textContent = "00";
-    }
-
     let time = parseInt(timeInput.value);
-    if (time <= 0) minutesContainer.textContent = `01`;
-    else if (time < 10) minutesContainer.textContent = `0${time}`;
-    else if (time > 60) minutesContainer.textContent = 60;
-    else minutesContainer.textContent = time;
+    time = Math.min(Math.max(time, 1), 60); // Limit time between 1 and 60 minutes
+    updateTimerDisplay(time, 0);
     timeInput.value = "";
-  } else return;
+  }
 });
 
-let startTimer;
+let timer;
+
 startButton.addEventListener("click", () => {
-  if (+minutesContainer.textContent > 0) {
-    minutesContainer.innerHTML--;
-    if (+minutesContainer.textContent < 10)
-      minutesContainer.textContent = `0${minutesContainer.textContent}`;
-    secondsContainer.innerHTML = 59;
-
-    startTimer = setInterval(() => {
-      if (+secondsContainer.textContent != 0) {
-        secondsContainer.innerHTML--;
-        if (parseInt(secondsContainer.textContent) < 10)
-          secondsContainer.textContent = `0${secondsContainer.textContent}`;
-      } else {
-        if (+minutesContainer.textContent > 0) {
-          minutesContainer.innerHTML--;
-          if (+minutesContainer.textContent < 10) {
-            minutesContainer.innerHTML = `0${minutesContainer.textContent}`;
-          }
-          secondsContainer.innerHTML = 59;
-        } else {
-          clearInterval(startTimer);
-          minutesContainer.textContent = "00";
-          secondsContainer.textContent = "00";
-          playFinshTimeSound();
-        }
-      }
-    }, 1000);
-
-    //
-  } else return;
+  if (!timer) {
+    timer = startTimer();
+  }
 });
 
 resetButton.addEventListener("click", () => {
-  clearInterval(startTimer);
-  minutesContainer.textContent = "00";
-  secondsContainer.textContent = "00";
+  clearInterval(timer);
+  timer = null;
+  updateTimerDisplay(0, 0);
 });
-
-function playFinshTimeSound() {
-  finshTimeAudio.play();
-}
