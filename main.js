@@ -5,14 +5,15 @@ const addTimeButton = document.querySelector(".add-time");
 const minutesContainer = document.querySelector(".minutes");
 const secondsContainer = document.querySelector(".seconds");
 const finshTimeAudio = document.querySelector(".finshTimeAudio");
-const minutes = minutesContainer.textContent;
-const seconds = secondsContainer.textContent;
 
 addTimeButton.addEventListener("click", () => {
   if (timeInput.value) {
-    if (minutes !== "00" || seconds !== "00") {
-      minutes = "00";
-      seconds = "00";
+    if (
+      minutesContainer.textContent !== "00" ||
+      secondsContainer.textContent !== "00"
+    ) {
+      minutesContainer.textContent = "00";
+      secondsContainer.textContent = "00";
     }
 
     let time = parseInt(timeInput.value);
@@ -24,34 +25,34 @@ addTimeButton.addEventListener("click", () => {
   } else return;
 });
 
-console.log(+minutes);
-
 let startTimer;
 startButton.addEventListener("click", () => {
   if (+minutesContainer.textContent > 0) {
-    if (+minutesContainer.textContent > 1) {
-      minutesContainer.textContent--;
-      secondsContainer.textContent = 3;
-    }
+    minutesContainer.innerHTML--;
+    if (+minutesContainer.textContent < 10)
+      minutesContainer.textContent = `0${minutesContainer.textContent}`;
+    secondsContainer.innerHTML = 59;
 
-    // bunch of errors here...
     startTimer = setInterval(() => {
-      secondsContainer.textContent--;
-      if (
-        secondsContainer.textContent == 0 &&
-        minutesContainer.textContent == 0
-      ) {
-        clearInterval(startTimer);
-        playFinshTimeSound();
-        minutesContainer.textContent = "00";
-        secondsContainer.textContent = "00";
-      } else if (
-        secondsContainer.textContent == 0 &&
-        minutesContainer.textContent != 0
-      )
-        minutesContainer.textContent--;
+      if (+secondsContainer.textContent != 0) {
+        secondsContainer.innerHTML--;
+        if (parseInt(secondsContainer.textContent) < 10)
+          secondsContainer.textContent = `0${secondsContainer.textContent}`;
+      } else {
+        if (+minutesContainer.textContent > 0) {
+          minutesContainer.innerHTML = `0${--minutesContainer.textContent}`;
+          secondsContainer.innerHTML = 59;
+        } else {
+          clearInterval(startTimer);
+          minutesContainer.textContent = "00";
+          secondsContainer.textContent = "00";
+          playFinshTimeSound();
+        }
+      }
     }, 1000);
-  }
+
+    //
+  } else return;
 });
 
 resetButton.addEventListener("click", () => {
