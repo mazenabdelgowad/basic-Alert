@@ -39,7 +39,10 @@ startButton.addEventListener("click", () => {
         if (parseInt(secondsContainer.textContent) < 10)
           secondsContainer.textContent = `0${secondsContainer.textContent}`;
       } else {
-        if (+minutesContainer.textContent > 0) {
+        if (
+          +minutesContainer.textContent > 0 &&
+          +minutesContainer.textContent < 10
+        ) {
           minutesContainer.innerHTML = `0${--minutesContainer.textContent}`;
           secondsContainer.innerHTML = 59;
         } else {
